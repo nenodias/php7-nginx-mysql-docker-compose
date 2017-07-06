@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+    db:
+      image: mysql
+      environment:
+                - MYSQL_DATABASE=homestead
+                - MYSQL_USER=homestead
+                - MYSQL_PASSWORD=secret
+                - MYSQL_ROOT_PASSWORD=root
+      volumes:
+            - ./db:/var/lib/mysql
+      ports:
+            - "3306:3306"
+    phpmyadmin:
+     image: phpmyadmin/phpmyadmin
+     environment:
+            PMA_ARBITRARY: 1
+            MYSQL_USER: homestead
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: root
+     ports:
+            - "9980:80"
+     links:
+            # for mysql container
+            - "db:db"
+    web:
+      image: webdevops/php-nginx:ubuntu-16.04
+      environment:
+            WEB_DOCUMENT_ROOT: /var/www/public
+      volumes:
+            - ./web:/var/www/
+      ports:
+            - "9080:80"
+      links:
+             - "db:db"
+volumes:
+    db:
+        driver: "local"
