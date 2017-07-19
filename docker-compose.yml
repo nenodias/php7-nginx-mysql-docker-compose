@@ -31,7 +31,7 @@ services:
       volumes:
             - ./web:/var/www/
       ports:
-            - "9080:80"
+            - "8080:80"
       links:
              - "db:db"
 volumes:
